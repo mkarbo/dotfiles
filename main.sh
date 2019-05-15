@@ -27,7 +27,7 @@ bash ${SCRIPT_DIR}/tmux/tmux_move_inits.sh ${WORK_DIR}
 
 
 
-#--- TMUX ----
+#--- BASH ----
 echo "RUNNING BASH SCRIPTS"
 echo
 bash ${SCRIPT_DIR}/bash/bash_move_inits.sh ${WORK_DIR}
