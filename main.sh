@@ -29,6 +29,11 @@ else
 
 	split_line
 
+	echo -e 'running \e[96mapt-get install ranger -y\e[0m to install ranger file manager. '
+	apt-get install ranger -y
+
+	split_line
+
 	echo 'EXECUTING SETUP SCRIPTS'
 	WORK_DIR=${PWD}
 
@@ -65,5 +70,12 @@ else
 	#--- BASH ----
 	echo -e "\e[96mRUNNING BASH SCRIPTS\e[0m"
 	bash ${SCRIPT_DIR}/bash/bash_move_inits.sh ${WORK_DIR}
+	echo
+
+	split_line
+
+	#--- RANGER ----
+	echo -e "\e[96mRUNNING RANGER SCRIPTS\e[0m"
+	bash ${SCRIPT_DIR}/ranger/ranger_move_inits.sh ${WORK_DIR}
 	echo
 fi
