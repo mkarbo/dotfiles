@@ -21,7 +21,17 @@ else
 
 	echo -e 'running \e[96mapt-get update\e[0m. This could take some time..'
 	apt-get update
+
+	split_line
 	
+	echo -e 'running \e[96mapt-get install python3.6 -y\e[0m to install python3. '
+	apt-get install python3.6 -y
+	
+	split_line
+	
+	echo -e 'running \e[96mapt-get install python3-pip -y\e[0m to install pip for python3. '
+	apt-get install python3-pip -y
+
 	split_line
 	
 	echo -e 'running \e[96mapt-get install nvim -y\e[0m to install neovim. '
@@ -77,5 +87,12 @@ else
 	#--- RANGER ----
 	echo -e "\e[96mRUNNING RANGER SCRIPTS\e[0m"
 	bash ${SCRIPT_DIR}/ranger/ranger_move_inits.sh ${WORK_DIR}
+	echo
+
+	split_line
+
+	#--- RANGER ----
+	echo -e "\e[96mRUNNING PIP INSTALL SCRIPTS\e[0m"
+	bash ${SCRIPT_DIR}/python/pip_installs.sh ${WORK_DIR}
 	echo
 fi
