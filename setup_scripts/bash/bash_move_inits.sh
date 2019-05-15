@@ -2,7 +2,7 @@
 
 mkdir -p ~/.config/bash/
 
-BASH_CONF=$1/config/bash/bash_init
+BASH_CONF=$1/config/bash/bash_init.sh
 
 echo "${BASH_CONF}"
 

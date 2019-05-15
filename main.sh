@@ -1,6 +1,6 @@
 #!/bin/bash
 clear >$(tty)
-echo -n "Do you wish to continue with setup? type either of (y/Y/yes/Yes/YES) to continue "
+echo -e "Do you wish to continue with setup? type either of \e[4m(y/Y/yes/Yes/YES)\e[0m to continue "
 read answer
 
 if ! [[ "$answer" =~ ^("y"|"Y"|"yes"|"Yes"|"YES")$ ]]; then
@@ -18,14 +18,14 @@ else
 
 	function split_line {
 	echo
-	echo '--------------------------'
+	echo -e '\e[2m\e[32m--------------------------\e[0m'
 	echo
 	}
 
 	split_line
 
 	#--- NEOVIM ----
-	echo "RUNNING NEOVIM SCRIPTS"
+	echo -e "\e[96mRUNNING NEOVIM SCRIPTS\e[0m"
 	bash ${SCRIPT_DIR}/nvim/nvim_move_inits.sh ${WORK_DIR}
 	bash ${SCRIPT_DIR}/nvim/nvim_plug_install.sh
 
@@ -33,21 +33,21 @@ else
 
 
 	#---- NVIM PLUGINS -----
-	echo "INSTALLING NVIM PLUGINS USING PLUG"
+	echo -e "\e[96mINSTALLING NVIM PLUGINS USING PLUG\e[0m"
 	nvim +PlugInstall +qall > /dev/null
 	echo DONE
 
 	split_line
 
 	#--- TMUX ----
-	echo "RUNNING TMUX SCRIPTS"
+	echo -e "\e[96mRUNNING TMUX SCRIPTS\e[0m"
 	bash ${SCRIPT_DIR}/tmux/tmux_move_inits.sh ${WORK_DIR}
 
 
 	split_line
 
 	#--- BASH ----
-	echo "RUNNING BASH SCRIPTS"
+	echo -e "\e[96mRUNNING BASH SCRIPTS\e[0m"
 	bash ${SCRIPT_DIR}/bash/bash_move_inits.sh ${WORK_DIR}
 	echo
 fi
