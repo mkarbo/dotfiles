@@ -11,6 +11,5 @@ for file in $NVIM_PATH
 do
 	cp $file ~/.config/nvim/
 	echo "moved $file to ~/.config/nvim/"
-	echo 
 done
 
