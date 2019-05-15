@@ -3,11 +3,32 @@ clear >$(tty)
 echo -e "Do you wish to continue with setup? type either of \e[4m(y/Y/yes/Yes/YES)\e[0m to continue "
 read answer
 
+
+function split_line {
+echo
+echo -e '\e[2m\e[32m--------------------------\e[0m'
+echo
+}
+
+
+
+
 if ! [[ "$answer" =~ ^("y"|"Y"|"yes"|"Yes"|"YES")$ ]]; then
 	echo "ABORTING"
 	exit
 else
-	echo
+	split_line
+
+	echo -e 'running \e[96mapt-get update\e[0m. This could take some time..'
+	apt-get update
+	
+	split_line
+	
+	echo -e 'running \e[96mapt-get install nvim -y\e[0m to install neovim. '
+	apt-get install nvim -y
+
+	split_line
+
 	echo 'EXECUTING SETUP SCRIPTS'
 	WORK_DIR=${PWD}
 
@@ -16,11 +37,6 @@ else
 	echo "    - CURRENT WORK DIR: $WORK_DIR"
 
 
-	function split_line {
-	echo
-	echo -e '\e[2m\e[32m--------------------------\e[0m'
-	echo
-	}
 
 	split_line
 
