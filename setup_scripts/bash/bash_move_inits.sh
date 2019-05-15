@@ -9,7 +9,7 @@ echo "${BASH_CONF}"
 echo "MOVING BASH INIT FILES"
 cp $BASH_CONF ~/.config/bash/
 echo -e " - moved \e[96m${BASH_CONF}\e[0m to ~/.config/bash/"
-ln -sf ~/.config/bash/bash_init ~/.bashrc
+ln -sf ~/.config/bash/bash_init.sh ~/.bashrc
 
 echo "EXPORTING VISUAL=nvim and EDITOR=\"\$VISUAL\""
 export VISAUL=nvim
