@@ -24,18 +24,37 @@ else
 
 	split_line
 	
-	echo -e 'running \e[96mapt-get install python3.6 -y\e[0m to install python3. '
-	apt-get install python3.6 -y
-	
+	echo -e 'running \e[96mapt-get install python -y\e[0m to install python. '
+	apt-get install python -y
+
 	split_line
 	
+	echo -e 'running \e[96mapt-get install python3 -y\e[0m to install python3. '
+	apt-get install python3 -y
+
+	split_line
+
+	echo -e 'running \e[96mapt-get install python-pip -y\e[0m to install pip for python3. '
+	apt-get install python-pip -y
+	
+	split_line
+
 	echo -e 'running \e[96mapt-get install python3-pip -y\e[0m to install pip for python3. '
 	apt-get install python3-pip -y
 
 	split_line
 	
+	echo 'running'
+	echo -e ' - \e[96mapt-get install software-properties-common -y; add-apt-repository ppa:neovim-ppa/stable -y; apt-get update -y\e[0m'
+	echo 'to install neovim dependencies. '
+
+	apt-get install software-properties-common -y; add-apt-repository ppa:neovim-ppa/stable -y; apt-get update -y
+	
+
+	split_line
+	
 	echo -e 'running \e[96mapt-get install nvim -y\e[0m to install neovim. '
-	apt-get install nvim -y
+	apt-get install neovim -y
 
 	split_line
 
