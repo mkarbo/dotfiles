@@ -3,7 +3,7 @@ alias tmux='tmux -2'
 alias ls='ls --color=always'
 
 
-alias la='ls -la'
+alias la='ls -lah'
 
 alias vim='nvim'
 
