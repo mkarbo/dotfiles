@@ -27,3 +27,4 @@ else
 fi
 }
 
+bind 'set mark-symlinked-directories on'
