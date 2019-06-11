@@ -27,11 +27,8 @@ else
 fi
 }
 
-
-
-
 function pyvenv() {
 pip install pynvim cookiecutter
 }
 
-
+bind 'set mark-symlinked-directories on'
