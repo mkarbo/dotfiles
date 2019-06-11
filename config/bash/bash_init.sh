@@ -27,3 +27,11 @@ else
 fi
 }
 
+
+
+
+function pyvenv() {
+pip install pynvim cookiecutter
+}
+
+
