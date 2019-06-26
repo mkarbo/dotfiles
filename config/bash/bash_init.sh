@@ -15,20 +15,4 @@ LS_COLORS='rs=0:di=1;35:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd
 export LS_COLORS
 
 
-function count() {
-DIRPARAM=$1
-TYPEPARAM=${2:-f}
-numfiles="$(find ./${DIRPARAM} -type ${TYPEPARAM} | wc | awk '{print $1}')"
-if [ $TYPEPARAM == f ]; then 
-	echo -e "number of files in directory is: \e[96m$numfiles\e[0m"
-
-else
-	echo -e "number of type ${TYPEPARAM} in directory is: \e[96m$numfiles\e[0m"
-fi
-}
-
-function pyvenv() {
-pip install pynvim cookiecutter
-}
-
-bind 'set mark-symlinked-directories on'
+source ~/.config/bash/bash_functions.sh
