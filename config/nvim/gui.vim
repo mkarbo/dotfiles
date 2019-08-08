@@ -1,4 +1,4 @@
-colorscheme 256_asu1dark
+colorscheme dracula
 set t_Co=256
 
 
