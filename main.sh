@@ -8,6 +8,8 @@ function ask() {
 }
 answer=$(ask "Do you wish to continue with setup? type either of \e[4m(y/Y/yes/Yes/YES)\e[0m to continue ")
 
+_username=$(ask "Please type your username (hint, it's ${USER}) to ensure ownership of ~/.local, ~/.config, ~/.vim etc. Type nothing to ignore ")
+
 function split_line {
 echo
 echo -e '\e[2m\e[32m--------------------------\e[0m'
@@ -19,8 +21,25 @@ if ! [[ "$answer" =~ ^("y"|"Y"|"yes"|"Yes"|"YES")$ ]]; then
 	echo "ABORTING"
 	exit
 else
+	if [ -z ${_username+x} ]; then
+		split_line
+
+		echo -e 'running \e[96mchown -R ~/.config \e[0m. This could take some time..'
+		chown -R ~/.config
+
+		split_line
+
+		echo -e 'running \e[96mchown -R ~/.local \e[0m. This could take some time..'
+		chown -R ~/.local
+
+		split_line
+
+		echo -e 'running \e[96mchown -R ~/.vim \e[0m. This could take some time..'
+		chown -R ~/.local
+	fi
 
 	split_line
+
 
 	echo -e 'running \e[96mapt-get update\e[0m. This could take some time..'
 	apt-get update
