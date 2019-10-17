@@ -10,6 +10,7 @@ Plug 'gmarik/Vundle.vim'
 Plug 'jnurmine/Zenburn'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'altercation/vim-colors-solarized'
+Plug 'flazz/vim-colorschemes'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'vim-scripts/indentpython.vim'
@@ -50,7 +51,7 @@ let g:airline_right_sep=''
 
 
 let g:pymode_lint_unmodified = 1
-let g:pymode_options_max_line_length= 79
+let g:pymode_options_max_line_length= 88
 let g:pymode_options_colorcolumn = 0
 "add error messages from linting in pymode to below list to ignore them
 "let g:pymode_lint_ignore = ['E501', 'W', ]

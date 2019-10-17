@@ -1,5 +1,5 @@
-colorscheme 256_asu1dark
-set t_Co=256
+colorscheme dracula
+"set t_Co=256
 
 
 autocmd TermOpen * set bufhidden=hide

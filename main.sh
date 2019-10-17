@@ -1,8 +1,15 @@
 #!/bin/bash
 clear >$(tty)
-echo -e "Do you wish to continue with setup? type either of \e[4m(y/Y/yes/Yes/YES)\e[0m to continue "
-read answer
 
+function ask() {
+	local __TEXT_INPUT=$1
+	read -p "$(echo -e "$__TEXT_INPUT")" __OUTPUT
+	echo $__OUTPUT
+}
+
+answer=$(ask "Do you wish to continue with setup? type either of \e[4m(y/Y/yes/Yes/YES)\e[0m to continue ")
+
+_username=$(ask "Please type your username (hint, it's ${USER}) to ensure ownership of ~/.local, ~/.config, ~/.vim etc. Type nothing to ignore ")
 
 function split_line {
 echo
@@ -10,14 +17,29 @@ echo -e '\e[2m\e[32m--------------------------\e[0m'
 echo
 }
 
-
-
-
 if ! [[ "$answer" =~ ^("y"|"Y"|"yes"|"Yes"|"YES")$ ]]; then
 	echo "ABORTING"
 	exit
 else
+	if [ -z ${_username+x} ]; then
+		split_line
+
+		echo -e 'running \e[96mchown -R ~/.config \e[0m. This could take some time..'
+		chown -R ~/.config
+
+		split_line
+
+		echo -e 'running \e[96mchown -R ~/.local \e[0m. This could take some time..'
+		chown -R ~/.local
+
+		split_line
+
+		echo -e 'running \e[96mchown -R ~/.vim \e[0m. This could take some time..'
+		chown -R ~/.local
+	fi
+
 	split_line
+
 
 	echo -e 'running \e[96mapt-get update\e[0m. This could take some time..'
 	apt-get update
@@ -71,6 +93,11 @@ else
 	echo "    - CURRENT WORK DIR: $WORK_DIR"
 
 
+
+	split_line
+	
+	#--- GIT CONFIG ----
+	bash ${SCRIPT_DIR}/git/git_config.sh
 
 	split_line
 
