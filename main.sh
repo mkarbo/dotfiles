@@ -9,7 +9,7 @@ function ask() {
 
 answer=$(ask "Do you wish to continue with setup? type either of \e[4m(y/Y/yes/Yes/YES)\e[0m to continue ")
 
-_username=$(ask "Please type your username (hint, it's ${USER}) to ensure ownership of ~/.local, ~/.config, ~/.vim etc. Type nothing to ignore ")
+_username=$(ask "Please type your username (script is run using ${USER}) to change ownership of ~/.local, ~/.config, ~/.vim to this user. Type nothing to ignore ")
 
 function split_line {
 echo
@@ -25,17 +25,17 @@ else
 		split_line
 
 		echo -e 'running \e[96mchown -R ~/.config \e[0m. This could take some time..'
-		chown -R ~/.config
+		chown -R ${_username} ~/.config
 
 		split_line
 
 		echo -e 'running \e[96mchown -R ~/.local \e[0m. This could take some time..'
-		chown -R ~/.local
+		chown -R ${_username} ~/.local
 
 		split_line
 
 		echo -e 'running \e[96mchown -R ~/.vim \e[0m. This could take some time..'
-		chown -R ~/.local
+		chown -R ${_username} ~/.vim
 	fi
 
 	split_line

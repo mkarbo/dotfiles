@@ -9,7 +9,7 @@ echo "Setting up global git config. Please answer some questions"
 
 __CONFIG_GIT=$(ask "Do you want to configure git? (Leave blank to ignore)")
 
-if [ -z ${__CONFIG_GIT+x} ]; then
+if ! [[ -z ${__CONFIG_GIT+x} ]]; then
 	__GIT_NAME=$(ask "Name? ")
 	__GIT_EMAIL=$(ask "Email? ")
 	git config --global user.name "$__GIT_NAME"
