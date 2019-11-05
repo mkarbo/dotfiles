@@ -27,7 +27,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
 autocmd VimEnter * NERDTree
 
-map <C-n> :NERDTreeToggle<CR>
+map <S-Tab> :NERDTreeToggle<CR>
 
 
 
@@ -38,6 +38,8 @@ autocmd BufEnter * NERDTreeMirror
 
 
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+let g:gruvbox_termcolors=16
 
 let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
