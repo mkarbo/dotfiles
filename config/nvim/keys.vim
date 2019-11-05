@@ -5,10 +5,8 @@ nnoremap <Space>n :lnext <CR>
 nnoremap <Space>p :lprev <CR>
 nnoremap <Space>c :lcl <CR>
 
-tnoremap <Esc> <C-\><C-n>
 
 
-nmap <S-Tab> :NERDTree<CR><C-w>=
 nmap <C-Space> <C-^>
 nmap gb :ls<CR>:buffer
 tnoremap <Esc> <C-\><C-n>
