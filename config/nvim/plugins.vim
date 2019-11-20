@@ -5,7 +5,7 @@ call plug#begin('~/.vim/plugged')
 "-----------------------------------------------
 
 Plug 'Yggdroot/indentLine'
-Plug 'junegunn/goyo.vim'
+"Plug 'junegunn/goyo.vim'
 Plug 'gmarik/Vundle.vim'
 Plug 'jnurmine/Zenburn'
 Plug 'vim-airline/vim-airline-themes'
@@ -17,6 +17,7 @@ Plug 'vim-scripts/indentpython.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'noah/vim256-color'
 Plug 'python-mode/python-mode', { 'branch': 'develop' }
+Plug 'milkypostman/vim-togglelist'
 call plug#end()
 
 "-----------------------------------------------
@@ -29,6 +30,7 @@ autocmd VimEnter * NERDTree
 
 map <S-Tab> :NERDTreeToggle<CR>
 
+nmap <script> <silent> <Space>c :call ToggleLocationList()<CR>
 
 
 autocmd VimEnter * NERDTree

@@ -3,9 +3,8 @@ nnoremap <Space> <NOP>
 nnoremap <Space>n :lnext <CR>
 "prev location in locationlist
 nnoremap <Space>p :lprev <CR>
-nnoremap <Space>c :lcl <CR>
 
-
+command Bd bp | sp | bn | bd
 
 nmap <C-Space> <C-^>
 nmap gb :ls<CR>:buffer
@@ -17,4 +16,10 @@ nmap <C-p> :bprevious<CR>
 " nmap <C-S-c> :Bclose<CR>
 
 nmap <C-Del> :%s/\s\+$//g<CR>
+
+
+nmap <C-l> <C-w>l
+nmap <C-h> <C-w>h
+nmap <C-k> <C-w>k
+nmap <C-j> <C-w>j
 
