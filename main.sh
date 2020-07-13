@@ -46,19 +46,10 @@ else
 
 	split_line
 	
-	echo -e 'running \e[96mapt-get install python -y\e[0m to install python. '
-	apt-get install python -y
-
-	split_line
 	
 	echo -e 'running \e[96mapt-get install python3 -y\e[0m to install python3. '
 	apt-get install python3 -y
 
-	split_line
-
-	echo -e 'running \e[96mapt-get install python-pip -y\e[0m to install pip for python3. '
-	apt-get install python-pip -y
-	
 	split_line
 
 	echo -e 'running \e[96mapt-get install python3-pip -y\e[0m to install pip for python3. '
@@ -78,12 +69,6 @@ else
 	echo -e 'running \e[96mapt-get install nvim -y\e[0m to install neovim. '
 	apt-get install neovim -y
 
-	split_line
-
-	echo -e 'running \e[96mapt-get install ranger -y\e[0m to install ranger file manager. '
-	apt-get install ranger -y
-
-	split_line
 
 	echo 'EXECUTING SETUP SCRIPTS'
 	WORK_DIR=${PWD}
@@ -110,8 +95,8 @@ else
 
 
 	#---- NVIM PLUGINS -----
-	echo -e "\e[96mINSTALLING NVIM PLUGINS USING PLUG\e[0m"
-	nvim +PlugInstall +qall > /dev/null
+	echo -e "\e[96mINSTALLING NVIM PLUGINS USING VUNDLE\e[0m"
+	nvim +PluginInstall +qall > /dev/null
 	echo DONE
 
 	split_line
@@ -130,15 +115,4 @@ else
 
 	split_line
 
-	#--- RANGER ----
-	echo -e "\e[96mRUNNING RANGER SCRIPTS\e[0m"
-	bash ${SCRIPT_DIR}/ranger/ranger_move_inits.sh ${WORK_DIR}
-	echo
-
-	split_line
-
-	#--- RANGER ----
-	echo -e "\e[96mRUNNING PIP INSTALL SCRIPTS\e[0m"
-	bash ${SCRIPT_DIR}/python/pip_installs.sh ${WORK_DIR}
-	echo
 fi
