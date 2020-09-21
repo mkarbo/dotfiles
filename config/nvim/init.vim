@@ -1,86 +1,33 @@
-" ---------------------------------------------------------------------------------
-"  CONFIGURE VUNDLE
-" ---------------------------------------------------------------------------------
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nu
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'morhetz/gruvbox'
+Plug 'scrooloose/nerdtree'
+Plug 'https://github.com/godlygeek/tabular'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'scrooloose/nerdcommenter'
+Plug 'embark-theme/vim', { 'as': 'embark' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'HerringtonDarkholme/yats.vim' "
+call plug#end()
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-"
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-"
-" The following are examples of different formats supported.  Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-"
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-" ---------------------------------------------------------------------------------
-"  END CONFIGURE VUNDLE
-" ---------------------------------------------------------------------------------
-"  INSTALL PLUGINS
-" ---------------------------------------------------------------------------------
+:set background=dark
+:set termguicolors
+:colorscheme embark
+:redraw!
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'https://github.com/godlygeek/tabular'
-Plugin 'reasonml-editor/vim-reason-plus'
-Plugin 'hashivim/vim-packer'
-Plugin 'hashivim/vim-vagrant'
 
-"Plugin 'HerringtonDarkholme/yats.vim'
-"Plugin 'mhartington/nvim-typescript'
-"Plugin 'Shougo/deoplete.nvim'
-"Plugin 'Shougo/denite.nvim'
 
-"Plugin 'leafgarland/typescript-vim'
-
-Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/vim-lsp'
-Plugin 'prabirshrestha/asyncomplete.vim'
-Plugin 'prabirshrestha/asyncomplete-lsp.vim'
-" Plugin 'ryanolsonx/vim-lsp-typescript'
-Plugin 'mattn/vim-lsp-settings'
-"Plugin 'neovim/nvim-lsp'
-
-" Plugin 'https://github.com/dfxyz/CandyPaper.vim'
-
-" ---------------------------------------------------------------------------------
+"---------------------------------------------------------------------------------
 "  CONFIGURE PLUGINS
-" ---------------------------------------------------------------------------------
+"---------------------------------------------------------------------------------
 
-" nerdtree specific config:
+" ------------NERDTREE------------
 autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 if &term =~ '256color'
     " Disable Background Color Erase (BCE) so that color schemes
     " work properly when Vim is used inside tmux and GNU screen.
@@ -88,14 +35,103 @@ if &term =~ '256color'
 endif
 
 
-:set background=dark
-:set termguicolors
-" :colorscheme: CandyPaper
-" :colorscheme made_of_code
-" :colorscheme Chasing_Logic
-:colorscheme gruvbox
-" :set background=light
-:redraw!
+" ------------CoC-------------
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+let g:coc_global_extensions = [
+  \ 'coc-snippets',
+  \ 'coc-pairs',
+  \ 'coc-tsserver',
+  \ 'coc-eslint', 
+  \ 'coc-prettier', 
+  \ 'coc-json', 
+  \ 'coc-python'
+  \ ]
+set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+set signcolumn=yes
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nmap <F2> <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <C-d> <Plug>(coc-range-select)
+xmap <silent> <C-d> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
 
 "  MAPPINGS
 " ---------------------------------------------------------------------------------
@@ -129,9 +165,6 @@ tnoremap <Esc> <C-\><C-n>
 
 let NERDTreeIgnore=['__pycache__']
 let NERDTreeShowHidden=1
-"let NERDTreeQuitOnOpen = 1
-"let NERDTreeMinimalUI = 1
-"let NERDTreeDirArrows = 1
 
 " Cycle buffers
 nmap <C-n> :bnext<CR>
@@ -145,28 +178,24 @@ set list
 let g:gruvbox_termcolors=16
 
 autocmd TermOpen * set bufhidden=hide
-" Setup on startup:
-" :set equalalways
-" :vsplit
-" :vert term
 
-"
-" For NeoVIM language server
-"
-" required for operations modifying multiple buffers like rename.
-set hidden
-
-nnoremap <silent> <A-d> :LspDefinition<cr>
-nnoremap <silent> <cr> :LspHover<cr>
 
 autocmd BufNewFile,BufRead *.re set syntax=reason
 autocmd BufNewFile,BufRead *.ts set syntax=typescript
 autocmd BufNewFile,BufRead *.tsx set syntax=typescript.tsx
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" TypeScript settings
-let g:deoplete#enable_at_startup = 1
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-" let g:lsp_preview_keep_focus = 0
-" let g:lsp_preview_max_width = 40
-
-
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
