@@ -12,6 +12,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'ap/vim-buftabline'
 Plug 'HerringtonDarkholme/yats.vim' "
 call plug#end()
 
@@ -161,7 +163,12 @@ autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 nmap <C-Space> <C-^>
 nmap gb :ls<CR>:buffer
-tnoremap <Esc> <C-\><C-n>
+
+if has("nvim")
+  au! TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+  au! FileType fzf tunmap <buffer> <Esc>
+endif
+
 
 let NERDTreeIgnore=['__pycache__']
 let NERDTreeShowHidden=1
