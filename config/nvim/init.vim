@@ -2,6 +2,7 @@ set nu
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'morhetz/gruvbox'
+"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdtree'
 Plug 'https://github.com/godlygeek/tabular'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -9,19 +10,23 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
 Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'ap/vim-buftabline'
+"Plug 'ibhagwan/fzf-lua'
 Plug 'HerringtonDarkholme/yats.vim' "
+Plug 'jpalardy/vim-slime'
 call plug#end()
 
 :set background=dark
 :set termguicolors
 :colorscheme embark
 :redraw!
+set noswapfile
 
+"let g:indent_guides_enable_on_vim_startup = 1
 
 
 "---------------------------------------------------------------------------------
@@ -46,7 +51,7 @@ let g:coc_global_extensions = [
   \ 'coc-eslint', 
   \ 'coc-prettier', 
   \ 'coc-json', 
-  \ 'coc-python'
+  \ 'coc-pyright'
   \ ]
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
@@ -55,6 +60,11 @@ set signcolumn=yes
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+"
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> ]p :GitGutterPreviewHunk<CR>
+nmap <silent> [p :GitGutterFold<CR>
+
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -147,25 +157,27 @@ nmap <C-j> <C-w>j
 "nmap <S-Tab> :NERDTree<CR><C-w>=
 
 
-map <S-Tab> :NERDTreeToggle<CR>
+map <leader>t :NERDTreeToggle<CR>
 
 nmap <script> <silent> <Space>c :call ToggleLocationList()<CR>
 
 
-autocmd VimEnter * NERDTree
-autocmd BufEnter * NERDTreeMirror
+" autocmd VimEnter * NERDTree
+" autocmd BufEnter * NERDTreeMirror
 
 
 
 
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
 nmap <C-Space> <C-^>
-nmap gb :ls<CR>:buffer
+"nmap gb :ls<CR>:buffer
+nmap gb :Buffers<CR>
 
 if has("nvim")
   au! TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+
   au! FileType fzf tunmap <buffer> <Esc>
 endif
 
@@ -177,6 +189,15 @@ let NERDTreeShowHidden=1
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprevious<CR>
 " nmap <C-S-c> :Bclose<CR>
+"
+
+" vmap <leader>s :CocCommand python.execSelectionInTerminal<CR>
+" let g:send_disable_mapping=1
+" 
+" tnoremap <leader>S :SendHere<CR>
+" nmap <leader>h <Plug>SendLine
+" nmap <leader>s <Plug>Send
+" vmap <leader>w <Plug>Send
 
 nmap <C-Del> :%s/\s\+$//g<CR>
 set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
@@ -197,7 +218,7 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -206,3 +227,62 @@ endfunction
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
+
+map <leader>g :GFiles<CR>
+map <leader>b :Buffers<CR>
+
+:nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
+
+
+let g:slime_python_ipython=1
+let g:slime_target = "neovim"
+
+if &diff
+    map <leader>1 :diffget LOCAL<CR>
+    map <leader>2 :diffget BASE<CR>
+    map <leader>3 :diffget REMOTE<CR>
+endif
+
+
+nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+
+
+function! ThirdSplit()
+  exec (winheight(0)-winheight(0)/3)."split"
+endfunction
+
+
+nnoremap <expr> <C-w>t ThirdSplit()
+
+
+nnoremap <Leader>ss :mksession! ~/.config/nvim/sessions/
+nnoremap <Leader>os :source ~/.config/nvim/sessions/
+nnoremap <Leader>rs :!rm ~/.config/nvim/sessions/
+
+function! CleanUp(...)
+  if a:0  " opfunc
+    let [first, last] = [line("'["), line("']")]
+  else
+    let [first, last] = [line("'<"), line("'>")]
+  endif
+  for lnum in range(first, last)
+    let line = getline(lnum)
+
+    " clean up the text, e.g.:
+    let line = substitute(line, '\s\+$', '', '')
+
+    call setline(lnum, line)
+  endfor
+endfunction
+
+nmap <silent> <Leader>x :set opfunc=CleanUp<CR>g@
+nnoremap <silent> <leader>h :call CocActionAsync('doHover')<cr>
+" autocmd CursorHold * silent call CocActionAsync('doHover')
+inoremap <C-k> <C-\><C-O>:call CocActionAsync('showSignatureHelp')<cr>
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#ignore_bufadd_pat = 'defx|gundo|nerd_tree|startify|tagbar|undotree|vimfiler'
+
+let @7="s  hp"
