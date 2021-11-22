@@ -9,6 +9,19 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 lvim.builtin.dap.active = true
 
+-- lvim.builtin.dashboard.custom_section[0] = { description = { " Todos!" }, command = ":e ~/todos.md" }
+
+-- table.insert(vim.g.dashboard_custom_section,  { description = { " Todos!" }, command = ":e ~/todos.md" })
+-- local dashboard_func = function()
+-- 	table.insert(vim.g.dashboard_custom_section, { g = { description = { " Todos!" }, command = ":e ~/todos.md" } })
+-- 	vim.g.dashboard_custom_section["k"] = { description = { "hello", command = ":e" } }
+-- 	print("hello")
+-- end
+-- lvim.builtin.dashboard.on_config_done = dashboard_func
+
+local ds = lvim.builtin.dashboard.custom_section
+ds.g = { description = { "✓  Org                 " }, command = ":e ~/org.norg" }
+
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "\\"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
@@ -22,8 +35,11 @@ lvim.keys.term_mode["<esc>"] = "<C-\\><C-n>"
 lvim.builtin.which_key.mappings["c"] = { "<cmd>bprevious <bar> bdelete! #<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["o"] = { "<cmd>SymbolsOutline<CR>", "Show Symbols Tree" }
 lvim.builtin.which_key.mappings["da"] = { "<cmd>lua require('dapui').toggle()<CR>", "Toggle UI" }
+lvim.builtin.which_key.mappings["lR"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Find references" }
 
 lvim.builtin.which_key.mappings["zz"] = { "<cmd>ZenMode<cr>", "Zen" }
+lvim.builtin.which_key.mappings["zl"] = { "<cmd>colorscheme gruvbox|set bg=light<cr>", "light color" }
+lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme tokyonight|set bg=dark<cr>", "dark color" }
 lvim.builtin.which_key.mappings["zt"] = { "<cmd>Twilight<cr>", "Twilight" }
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["T"] = {
@@ -71,10 +87,6 @@ formatters.setup({
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	{ exe = "flake8", filetypes = { "python" }, args = { "--max-line-length=88", "--ignore=E203" } },
-	{
-		exe = "eslint_d",
-		filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-	},
 })
 
 -- Additional Plugins
@@ -121,6 +133,41 @@ lvim.plugins = {
 		end,
 		cmd = "ZenMode",
 	},
+	{
+		"nvim-neorg/neorg",
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("neorg").setup({
+				-- Tell Neorg what modules to load
+				load = {
+					["core.defaults"] = {}, -- Load all the default modules
+					["core.norg.concealer"] = {}, -- Allows for use of icons
+					["core.norg.dirman"] = { -- Manage your directories with Neorg
+						config = {
+							workspaces = {
+								my_workspace = "~/neorg",
+							},
+						},
+					},
+				},
+			})
+			local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+
+			parser_configs.norg = {
+				install_info = {
+					url = "https://github.com/nvim-neorg/tree-sitter-norg",
+					files = { "src/parser.c", "src/scanner.cc" },
+					branch = "main",
+				},
+			}
+		end,
+	},
+	{ "shaunsingh/nord.nvim" },
+	{ "ggandor/lightspeed.nvim" },
+	-- { "ChristianChiarulli/nvcode-color-schemes.vim" },
+	{ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } },
+	-- { "projekt0n/github-nvim-theme" },
+	{ "sindrets/diffview.nvim" },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -131,5 +178,7 @@ lvim.plugins = {
 require("telescope").load_extension("fzf")
 
 require("dapui").setup()
+
+-- require("github-theme").setup()
 
 lvim.colorscheme = "tokyonight"
