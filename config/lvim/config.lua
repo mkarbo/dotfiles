@@ -168,6 +168,16 @@ lvim.plugins = {
 	{ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } },
 	-- { "projekt0n/github-nvim-theme" },
 	{ "sindrets/diffview.nvim" },
+	{ "tpope/vim-dadbod" },
+	{ "kristijanhusak/vim-dadbod-ui", requires = { "tpope/vim-dadbod" } },
+	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("user.autotag").config()
+		end,
+	},
+	{ "ChristianChiarulli/nvim-ts-rainbow" },
+	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -182,3 +192,17 @@ require("dapui").setup()
 -- require("github-theme").setup()
 
 lvim.colorscheme = "tokyonight"
+
+--
+-- Activate LunarVim tailwindcss lsp configuration only
+-- if project seems to have a tailwindcss dependency
+--
+
+local utils = require("user.utils")
+local project_has_tailwindcss_dependency = function()
+	return (vim.fn.glob("tailwind*") ~= "" or utils.is_in_package_json("tailwindcss"))
+end
+
+if project_has_tailwindcss_dependency() == true then
+	require("lvim.lsp.manager").setup("tailwindcss")
+end

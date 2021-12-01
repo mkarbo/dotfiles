@@ -6,7 +6,7 @@ M.config = function()
 		return
 	end
 
-	lsp_signature.on_attach({ auto_close_after = 2, hint_enable = true, always_trigger = true })
+	lsp_signature.on_attach({ auto_close_after = 2, hint_enable = false, always_trigger = false })
 end
 
 return M
