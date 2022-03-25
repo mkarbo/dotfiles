@@ -1,13 +1,15 @@
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "onedarker"
 lvim.builtin.bufferline.active = false
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 lvim.builtin.dap.active = true
+
+table.insert(lvim.builtin.project.patterns, ".neovimproject")
+table.insert(lvim.builtin.project.patterns, ".nvimproject")
 
 -- lvim.builtin.dashboard.custom_section[0] = { description = { " Todos!" }, command = ":e ~/todos.md" }
 
@@ -26,11 +28,15 @@ ds.g = { description = { "✓  Org                 " }, command = ":e ~/org.norg
 lvim.leader = "\\"
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader>t"] = ":NvimTreeToggle<cr>"
+lvim.keys.normal_mode["<leader>F"] = ":Telescope find_files<cr>"
 lvim.keys.normal_mode["<leader>c"] = ":<C-U>bprevious <bar> bdelete #<CR>"
 lvim.keys.normal_mode["<esc><esc>"] = "<cmd>nohlsearch<cr>"
 lvim.keys.normal_mode["<S-h>"] = ""
 lvim.keys.normal_mode["<S-l>"] = ""
+
 lvim.keys.term_mode["<esc>"] = "<C-\\><C-n>"
+
+lvim.keys.insert_mode["<C-k>"] = "<cmd>lua vim.lsp.buf.signature_help()<CR>"
 
 lvim.builtin.which_key.mappings["c"] = { "<cmd>bprevious <bar> bdelete! #<CR>", "Close Buffer" }
 lvim.builtin.which_key.mappings["o"] = { "<cmd>SymbolsOutline<CR>", "Show Symbols Tree" }
@@ -38,9 +44,9 @@ lvim.builtin.which_key.mappings["da"] = { "<cmd>lua require('dapui').toggle()<CR
 lvim.builtin.which_key.mappings["lR"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Find references" }
 
 lvim.builtin.which_key.mappings["zz"] = { "<cmd>ZenMode<cr>", "Zen" }
-lvim.builtin.which_key.mappings["zl"] = { "<cmd>colorscheme gruvbox|set bg=light<cr>", "light color" }
-lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme tokyonight|set bg=dark<cr>", "dark color" }
-lvim.builtin.which_key.mappings["zt"] = { "<cmd>Twilight<cr>", "Twilight" }
+lvim.builtin.which_key.mappings["zT"] = { "<cmd>Twilight<cr>", "Twilight" }
+lvim.builtin.which_key.mappings["zt"] = { "<cmd>Telescope<cr>", "Telescope" }
+lvim.builtin.which_key.mappings["zg"] = { "<cmd>Neogit<cr>", "Neogit" }
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 lvim.builtin.which_key.mappings["T"] = {
 	name = "+Trouble",
@@ -76,7 +82,7 @@ lvim.builtin.treesitter.autotag.enable = true
 
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
-	{ exe = "black", filetypes = { "python" } },
+	{ exe = "black", filetypes = { "python" }, args = { "--experimental-string-processing" } },
 	{ exe = "stylua", filetypes = { "lua" } },
 	{
 		exe = "prettier",
@@ -162,13 +168,15 @@ lvim.plugins = {
 			}
 		end,
 	},
-	{ "shaunsingh/nord.nvim" },
 	{ "ggandor/lightspeed.nvim" },
 	-- { "ChristianChiarulli/nvcode-color-schemes.vim" },
-	{ "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } },
-	-- { "projekt0n/github-nvim-theme" },
+	-- { "shaunsingh/nord.nvim" },
+	-- { "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } },
+	-- { "luisiacc/gruvbox-baby"},
 	{ "sindrets/diffview.nvim" },
+  { "lourenci/github-colors" },
 	{ "tpope/vim-dadbod" },
+  { "TimUntersberger/neogit" },
 	{ "kristijanhusak/vim-dadbod-ui", requires = { "tpope/vim-dadbod" } },
 	{
 		"windwp/nvim-ts-autotag",
@@ -189,9 +197,14 @@ require("telescope").load_extension("fzf")
 
 require("dapui").setup()
 
--- require("github-theme").setup()
+require("neogit").setup()
 
-lvim.colorscheme = "tokyonight"
+
+
+--- THEME
+lvim.colorscheme = "github-colors"
+lvim.builtin.which_key.mappings["zl"] = { "<cmd>colorscheme github-colors|set bg=light<cr>", "light color" }
+lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme github-colors|set bg=dark<cr>", "dark color" }
 
 --
 -- Activate LunarVim tailwindcss lsp configuration only
