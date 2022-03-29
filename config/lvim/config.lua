@@ -8,9 +8,7 @@ lvim.builtin.nvimtree.show_icons.git = 0
 lvim.builtin.nvimtree.active = true
 lvim.builtin.dap.active = true
 lvim.builtin.alpha.active = true
--- lvim.builtin.project.manual_mode = true
 lvim.builtin.project.active = false
--- lvim.builtin.project.silent_chdir = false
 
 lvim.builtin.telescope.defaults.initial_mode = "normal"
 
@@ -118,7 +116,7 @@ lvim.plugins = {
 			require("user.outline").config()
 		end,
 	},
-	{ "mfussenegger/nvim-dap-python" },
+	-- { "mfussenegger/nvim-dap-python" },
 	{ "leoluz/nvim-dap-go" },
 	{ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } },
 	{
@@ -198,9 +196,7 @@ if project_has_tailwindcss_dependency() == true then
 	require("lvim.lsp.manager").setup("tailwindcss")
 end
 
--- require("project_nvim").setup(lvim.builtin.project)
-
-local dap_python = require("dap-python")
+local dap_python = require("user.dap_python")
 dap_python.setup("~/.virtualenvs/debugpy/bin/python", { include_configs = false })
 
 local dap = require("dap")
