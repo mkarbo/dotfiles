@@ -2,27 +2,22 @@
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.builtin.bufferline.active = false
-lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
+lvim.builtin.nvimtree.active = true
 lvim.builtin.dap.active = true
+lvim.builtin.alpha.active = true
+-- lvim.builtin.project.manual_mode = true
+lvim.builtin.project.active = false
+-- lvim.builtin.project.silent_chdir = false
 
+lvim.builtin.telescope.defaults.initial_mode = "normal"
+
+table.insert(lvim.builtin.project.detection_methods, "lsp")
 table.insert(lvim.builtin.project.patterns, ".neovimproject")
 table.insert(lvim.builtin.project.patterns, ".nvimproject")
-
--- lvim.builtin.dashboard.custom_section[0] = { description = { " Todos!" }, command = ":e ~/todos.md" }
-
--- table.insert(vim.g.dashboard_custom_section,  { description = { " Todos!" }, command = ":e ~/todos.md" })
--- local dashboard_func = function()
--- 	table.insert(vim.g.dashboard_custom_section, { g = { description = { " Todos!" }, command = ":e ~/todos.md" } })
--- 	vim.g.dashboard_custom_section["k"] = { description = { "hello", command = ":e" } }
--- 	print("hello")
--- end
--- lvim.builtin.dashboard.on_config_done = dashboard_func
-
-local ds = lvim.builtin.dashboard.custom_section
-ds.g = { description = { "✓  Org                 " }, command = ":e ~/org.norg" }
+table.insert(lvim.builtin.project.patterns, "pyproject.toml")
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "\\"
@@ -44,10 +39,9 @@ lvim.builtin.which_key.mappings["da"] = { "<cmd>lua require('dapui').toggle()<CR
 lvim.builtin.which_key.mappings["lR"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Find references" }
 
 lvim.builtin.which_key.mappings["zz"] = { "<cmd>ZenMode<cr>", "Zen" }
-lvim.builtin.which_key.mappings["zT"] = { "<cmd>Twilight<cr>", "Twilight" }
 lvim.builtin.which_key.mappings["zt"] = { "<cmd>Telescope<cr>", "Telescope" }
 lvim.builtin.which_key.mappings["zg"] = { "<cmd>Neogit<cr>", "Neogit" }
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope project display_type=full<CR>", "Project" }
 lvim.builtin.which_key.mappings["T"] = {
 	name = "+Trouble",
 	r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -57,6 +51,11 @@ lvim.builtin.which_key.mappings["T"] = {
 	l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 	w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 }
+
+lvim.builtin.which_key.mappings["dP"] = { "<cmd>lua require('dap-python').test_runner = 'pytest'<CR>", "Pytest runner" }
+lvim.builtin.which_key.mappings["dM"] = { "<cmd>lua require('dap-python').test_method()<CR>", "Test method" }
+lvim.builtin.which_key.mappings["dC"] = { "<cmd>lua require('dap-python').test_class()<CR>", "Test class" }
+lvim.builtin.which_key.mappings["dV"] = { "<ESC><cmd>lua require('dap-python').debug_selection()<CR>", "Test visual" }
 
 -- LSP
 lvim.lsp.diagnostics.virtual_text = false
@@ -79,6 +78,10 @@ lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.disable = { "python" }
 lvim.builtin.treesitter.autotag.enable = true
+
+-- lvim.lsp.diagnostics.
+
+local nls = require("lvim.lsp.null-ls")
 
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
@@ -111,16 +114,8 @@ lvim.plugins = {
 	},
 	{
 		"simrat39/symbols-outline.nvim",
-		-- cmd = "SymbolsOutline",
 		config = function()
 			require("user.outline").config()
-		end,
-	},
-	{
-		"ray-x/lsp_signature.nvim",
-		event = "InsertEnter",
-		config = function()
-			require("user.lsp_signature").config()
 		end,
 	},
 	{ "mfussenegger/nvim-dap-python" },
@@ -139,45 +134,14 @@ lvim.plugins = {
 		end,
 		cmd = "ZenMode",
 	},
-	{
-		"nvim-neorg/neorg",
-		requires = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("neorg").setup({
-				-- Tell Neorg what modules to load
-				load = {
-					["core.defaults"] = {}, -- Load all the default modules
-					["core.norg.concealer"] = {}, -- Allows for use of icons
-					["core.norg.dirman"] = { -- Manage your directories with Neorg
-						config = {
-							workspaces = {
-								my_workspace = "~/neorg",
-							},
-						},
-					},
-				},
-			})
-			local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-
-			parser_configs.norg = {
-				install_info = {
-					url = "https://github.com/nvim-neorg/tree-sitter-norg",
-					files = { "src/parser.c", "src/scanner.cc" },
-					branch = "main",
-				},
-			}
-		end,
-	},
+	{ "shaunsingh/nord.nvim" },
 	{ "ggandor/lightspeed.nvim" },
-	-- { "ChristianChiarulli/nvcode-color-schemes.vim" },
-	-- { "shaunsingh/nord.nvim" },
-	-- { "ellisonleao/gruvbox.nvim", requires = { "rktjmp/lush.nvim" } },
-	-- { "luisiacc/gruvbox-baby"},
 	{ "sindrets/diffview.nvim" },
-  { "lourenci/github-colors" },
+	{ "lourenci/github-colors" },
 	{ "tpope/vim-dadbod" },
-  { "TimUntersberger/neogit" },
+	{ "TimUntersberger/neogit" },
 	{ "kristijanhusak/vim-dadbod-ui", requires = { "tpope/vim-dadbod" } },
+	{ "marko-cerovac/material.nvim" },
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()
@@ -185,31 +149,45 @@ lvim.plugins = {
 		end,
 	},
 	{ "ChristianChiarulli/nvim-ts-rainbow" },
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
+	{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+	-- { "hrsh7th/cmp-cmdline" },
+	{
+		"ray-x/lsp_signature.nvim",
+		config = function()
+			require("lsp_signature").on_attach()
+		end,
+	},
+	{
+		"gelguy/wilder.nvim",
+		requires = { "roxma/nvim-yarp", "roxma/vim-hug-neovim-rpc" },
+	},
+	{ "nvim-telescope/telescope-project.nvim" },
+	{ "nvim-telescope/telescope-file-browser.nvim" },
 }
 
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }
-
 require("telescope").load_extension("fzf")
+require("telescope").load_extension("file_browser")
+require("telescope").load_extension("project")
 
 require("dapui").setup()
 
 require("neogit").setup()
 
-
-
---- THEME
-lvim.colorscheme = "github-colors"
+-- THEME
+vim.g.material_style = "deep ocean"
+lvim.colorscheme = "material"
 lvim.builtin.which_key.mappings["zl"] = { "<cmd>colorscheme github-colors|set bg=light<cr>", "light color" }
-lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme github-colors|set bg=dark<cr>", "dark color" }
+-- lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme github-colors|set bg=dark<cr>", "dark color" }
+lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme material|set bg=dark<cr>", "dark color" }
 
 --
 -- Activate LunarVim tailwindcss lsp configuration only
 -- if project seems to have a tailwindcss dependency
 --
+require("user.cmp").config()
+require("user.wilder").setup()
+
+vim.api.nvim_set_keymap("n", "<space>fb", ":Telescope file_browser<cr>", { noremap = true })
 
 local utils = require("user.utils")
 local project_has_tailwindcss_dependency = function()
@@ -219,3 +197,47 @@ end
 if project_has_tailwindcss_dependency() == true then
 	require("lvim.lsp.manager").setup("tailwindcss")
 end
+
+-- require("project_nvim").setup(lvim.builtin.project)
+
+local dap_python = require("dap-python")
+dap_python.setup("~/.virtualenvs/debugpy/bin/python", { include_configs = false })
+
+local dap = require("dap")
+
+local default_setup_opts = {
+	console = "integratedTerminal",
+	pythonPath = nil,
+}
+
+dap.configurations.python = {
+	{
+		type = "python",
+		request = "launch",
+		name = "Launch file",
+		program = "${file}",
+		console = default_setup_opts.console,
+		pythonPath = default_setup_opts.pythonPath,
+	},
+	{
+		type = "python",
+		request = "launch",
+		name = "Launch file (all code)",
+		program = "${file}",
+		justMyCode = false,
+		console = default_setup_opts.console,
+		pythonPath = default_setup_opts.pythonPath,
+	},
+	{
+		type = "python",
+		request = "launch",
+		name = "Launch file with arguments",
+		program = "${file}",
+		args = function()
+			local args_string = vim.fn.input("Arguments: ")
+			return vim.split(args_string, " +")
+		end,
+		console = default_setup_opts.console,
+		pythonPath = default_setup_opts.pythonPath,
+	},
+}
