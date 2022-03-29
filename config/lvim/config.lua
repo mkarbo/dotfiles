@@ -185,7 +185,7 @@ require("neogit").setup()
 
 -- THEME
 vim.g.material_style = "deep ocean"
-lvim.colorscheme = "material"
+lvim.colorscheme = "dracula"
 lvim.builtin.which_key.mappings["zl"] = { "<cmd>colorscheme github-colors|set bg=light<cr>", "light color" }
 -- lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme github-colors|set bg=dark<cr>", "dark color" }
 lvim.builtin.which_key.mappings["zd"] = { "<cmd>colorscheme material|set bg=dark<cr>", "dark color" }
